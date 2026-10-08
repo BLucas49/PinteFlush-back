@@ -1,0 +1,44 @@
+# Récupère le message de commit
+
+COMMIT_TITLE="$(cat $1)"
+
+# Regex du format
+COMMIT_PATTERN="^[A-Z][A-Z_-]* - .{7,60}$"
+
+errs=()
+
+[[ $COMMIT_TITLE =~ \ -\ [A-Z][A-Z_-]*\ -\  ]] || errs+=("FEATURE absente ou pas en MAJUSCULES")
+
+desc="${COMMIT_TITLE#* - * - }"
+if (( ${#desc} < 7 || ${#desc} > 60 )); then
+  errs+=("description : ${#desc} caractères (attendu 7-60)")
+fi
+
+# Vérifie si le message de commit ne correspond pas à la nomenclature
+if (( ${#errs[@]} )); then
+printf '❌ Format de commit invalide" >&2
+printf '❌ %s\n\n' "${errs[@]}" >&2
+#   cat >&2 <<EOF
+# Format attendu :
+#   <gitmoji> #<ticket> - <FEATURE> - <description>
+
+# Règles :
+#   • gitmoji    : un code de la liste ci-dessous
+#   • ticket     : 1 à 10 chiffres, précédé de #
+#   • FEATURE    : MAJUSCULES, tirets et underscores autorisés
+#   • description: 7 à 60 caractères
+#   • séparateur : " - " (espace, tiret, espace)
+
+# Gitmoji valides :
+#   :hammer:                      🔨  Code lié à une fonctionnalité
+#   :test_tube:                   🧪  Ajout de test(s)
+#   :bug:                         🐛  Correction de bug
+#   :art:                         🎨  Correction de linter/format de code
+#   :twisted_rightwards_arrows:   🔀  Merge de branches
+#   :wrench:                      🔧  Configuration
+#   :construction_worker:         👷  CI/CD
+#   :memo:                        📝  Docsumentation
+# EOF
+  exit 1
+fi
+exit 0
