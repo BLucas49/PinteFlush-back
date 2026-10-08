@@ -7,7 +7,7 @@ COMMIT_PATTERN="^[A-Z][A-Z_-]* - .{7,60}$"
 
 errs=()
 
-[[ $COMMIT_TITLE =~ \ -\ [A-Z][A-Z_-]*\ -\  ]] || errs+=("FEATURE absente ou pas en MAJUSCULES")
+[[ $COMMIT_TITLE =~ ^[A-Z][A-Z_-]*\ -\  ]] || errs+=("FEATURE absente ou pas en MAJUSCULES")
 
 desc="${COMMIT_TITLE#* - * - }"
 if (( ${#desc} < 7 || ${#desc} > 60 )); then
@@ -16,7 +16,7 @@ fi
 
 # Vérifie si le message de commit ne correspond pas à la nomenclature
 if (( ${#errs[@]} )); then
-printf '❌ Format de commit invalide" >&2
+printf 'Format de commit invalide : \n' >&2
 printf '❌ %s\n\n' "${errs[@]}" >&2
 #   cat >&2 <<EOF
 # Format attendu :
