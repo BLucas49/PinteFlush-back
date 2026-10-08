@@ -1,23 +1,50 @@
 {
+  "private": true,
+  "name": "pinteflush-back",
+  "version": "0.1.0",
+  "description": "A Colyseus multiplayer server",
   "type": "module",
+  "main": "build/index.js",
+  "engines": {
+    "node": ">= 22.0.0"
+  },
   "scripts": {
+    "start": "tsx watch src/index.ts",
+    "loadtest": "tsx loadtest/example.ts --room my_room --numClients 2",
+    "build": "npm run clean && tsc -p tsconfig.build.json",
+    "clean": "rimraf build",
+    "test": "mocha -r tsx test/**.test.ts --exit --timeout 15000",
+    "prepare": "husky",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
-    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
-    "prepare": "husky"
+    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
   },
+  "author": "",
+  "license": "UNLICENSED",
   "devDependencies": {
+    "@colyseus/loadtest": "^0.18.1",
+    "@colyseus/sdk": "^0.18.1",
+    "@colyseus/testing": "^0.18.5",
     "@eslint/js": "^10.0.1",
+    "@types/express": "^5.0.6",
+    "@types/mocha": "^10.0.1",
     "eslint": "^10.12.0",
     "globals": "^17.13.0",
     "husky": "^9.1.7",
     "jiti": "^2.7.0",
-    "lefthook": "^2.2.1",
+    "mocha": "^11.7.5",
     "prettier": "3.9.9",
+    "rimraf": "^5.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.0.4",
     "typescript-eslint": "^8.71.1"
   },
-  "allowScripts": {
-    "lefthook@2.2.1": true
+  "dependencies": {
+    "@colyseus/playground": "^0.18.5",
+    "@colyseus/schema": "^5.0.14",
+    "@colyseus/tools": "^0.18.1",
+    "colyseus": "^0.18.2",
+    "express": "^5.2.1"
   }
 }
