@@ -18,27 +18,6 @@ fi
 if (( ${#errs[@]} )); then
 printf 'Format de commit invalide : \n' >&2
 printf '❌ %s\n\n' "${errs[@]}" >&2
-#   cat >&2 <<EOF
-# Format attendu :
-#   <gitmoji> #<ticket> - <FEATURE> - <description>
-
-# Règles :
-#   • gitmoji    : un code de la liste ci-dessous
-#   • ticket     : 1 à 10 chiffres, précédé de #
-#   • FEATURE    : MAJUSCULES, tirets et underscores autorisés
-#   • description: 7 à 60 caractères
-#   • séparateur : " - " (espace, tiret, espace)
-
-# Gitmoji valides :
-#   :hammer:                      🔨  Code lié à une fonctionnalité
-#   :test_tube:                   🧪  Ajout de test(s)
-#   :bug:                         🐛  Correction de bug
-#   :art:                         🎨  Correction de linter/format de code
-#   :twisted_rightwards_arrows:   🔀  Merge de branches
-#   :wrench:                      🔧  Configuration
-#   :construction_worker:         👷  CI/CD
-#   :memo:                        📝  Docsumentation
-# EOF
   exit 1
 fi
 exit 0

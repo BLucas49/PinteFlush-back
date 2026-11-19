@@ -1,23 +1,20 @@
-import {
-  defineServer,
-  defineRoom,
-  monitor,
-  createRouter,
-  createEndpoint,
-} from "colyseus";
+import { defineServer, /*defineRoom,*/ createRouter } from "colyseus";
 import { playground } from "@colyseus/playground";
-
+import express from "express";
+import cookieParser from "cookie-parser";
 /**
  * Import your Room files
  */
-import { MyRoom } from "./rooms/MyRoom.js";
+// import { MyRoom } from "./rooms/MyRoom.js";
+import { InitApi } from "./backend/core/config/config.js";
+import { createAppRoutes } from "./backend/routes/default.js";
 
 const server = defineServer({
   /**
    * Define your room handlers:
    */
   rooms: {
-    my_room: defineRoom(MyRoom),
+    // my_room: defineRoom(MyRoom),
   },
 
   /**
@@ -29,9 +26,6 @@ const server = defineServer({
    */
   routes: createRouter({
     ...playground({ prefix: "/playground" }),
-    api_hello: createEndpoint("/api/hello", { method: "GET" }, async (ctx) => {
-      return { message: "Hello World" };
-    }),
   }),
 
   /**
@@ -39,26 +33,11 @@ const server = defineServer({
    * Read more: https://expressjs.com/en/starter/basic-routing.html
    */
   express: (app) => {
-    app.get("/hi", (req, res) => {
-      res.send("It's time to kick ass and chew bubblegum!");
-    });
+    InitApi();
 
-    /**
-     * Use @colyseus/monitor
-     * If you expose it in production, make sure to protect it with a password:
-     * https://docs.colyseus.io/tools/monitoring#password-protection
-     */
-    if (process.env.NODE_ENV !== "production") {
-      app.use("/monitor", monitor());
-    }
-
-    /**
-     * Use @colyseus/playground
-     * (It is not recommended to expose this route in a production environment)
-     */
-    if (process.env.NODE_ENV !== "production") {
-      app.use("/", playground());
-    }
+    app.use(express.json());
+    app.use(cookieParser());
+    app.use("/api", createAppRoutes());
   },
 });
 

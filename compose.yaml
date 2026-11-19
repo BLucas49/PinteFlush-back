@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:18
+    container_name: postgres-dev
+    environment:
+      POSTGRES_USER: ${DB_USER:?Utilisateur db manquant}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Mot de passe db manquant}
+      POSTGRES_DB: ${DB_NAME:?Nom db manquant}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pinte_flush_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+volumes:
+  pinte_flush_data:
+    external: true

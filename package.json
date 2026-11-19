@@ -9,12 +9,14 @@
     "node": ">= 22.0.0"
   },
   "scripts": {
+    "db:new": "dbmate new",
+    "db:migrate": "dbmate up",
+    "db:rollback": "dbmate rollback",
     "start": "tsx watch src/index.ts",
     "loadtest": "tsx loadtest/example.ts --room my_room --numClients 2",
     "build": "npm run clean && tsc -p tsconfig.build.json",
     "clean": "rimraf build",
     "test": "mocha -r tsx test/**.test.ts --exit --timeout 15000",
-    "prepare": "husky",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
@@ -27,8 +29,13 @@
     "@colyseus/sdk": "^0.18.1",
     "@colyseus/testing": "^0.18.5",
     "@eslint/js": "^10.0.1",
+    "@types/bcrypt": "^6.0.0",
+    "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/mocha": "^10.0.1",
+    "@types/pg": "^8.23.1",
+    "dbmate": "^2.36.0",
     "eslint": "^10.12.0",
     "globals": "^17.13.0",
     "husky": "^9.1.7",
@@ -44,7 +51,12 @@
     "@colyseus/playground": "^0.18.5",
     "@colyseus/schema": "^5.0.14",
     "@colyseus/tools": "^0.18.1",
+    "bcrypt": "^6.0.0",
     "colyseus": "^0.18.2",
-    "express": "^5.2.1"
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^18.0.10",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.23.1"
   }
 }
