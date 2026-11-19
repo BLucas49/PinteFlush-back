@@ -22,3 +22,10 @@ export function getResponse<DataResponse extends IResponse>(
     message,
   };
 }
+
+export function getErrorResponse(error: string): ErrorResponse {
+  return {
+    success: false,
+    error,
+  };
+}

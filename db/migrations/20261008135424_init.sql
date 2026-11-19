@@ -32,7 +32,7 @@ CREATE INDEX idx_users_games_game_id ON users_games (game_id);
 
 CREATE TABLE public.sessions (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
-    token_hash TEXT NOT NULL,
+    token_hash TEXT NOT NULL UNIQUE,
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     expires_at timestamp with time zone NOT NULL DEFAULT now() + INTERVAL '24 weeks',
     used_at timestamp with time zone,
@@ -42,4 +42,7 @@ CREATE TABLE public.sessions (
 CREATE INDEX idx_sessions_user_id ON sessions (user_id); 
 
 -- migrate:down
-
+DROP TABLE IF EXISTS public.sessions;
+DROP TABLE IF EXISTS public.users_games;
+DROP TABLE IF EXISTS public.games;
+DROP TABLE IF EXISTS public.users;

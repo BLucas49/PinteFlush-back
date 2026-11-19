@@ -10,17 +10,14 @@ export abstract class ARepository {
 
   protected async query<R extends QueryResultRow>(
     sql: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    params?: any[],
+    params: unknown[] = [],
   ): Promise<QueryResult<R>> {
-    const connection = await this.pool.connect();
     try {
-      return await connection.query<R>(sql, params);
+      // pool.query gère lui-même l'acquisition et la libération du client
+      return await this.pool.query<R>(sql, params);
     } catch (error) {
       console.error(`Database query error: ${sql}`, error);
       throw error;
-    } finally {
-      connection.release();
     }
   }
 }

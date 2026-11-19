@@ -2,7 +2,7 @@ import { AError } from "../base/Error.js";
 
 export class NotFoundError extends AError {
   constructor(resource: string) {
-    super(`${resource} not found`, 404);
+    super(`${resource} introuvable`, 404);
   }
 }
 
@@ -13,19 +13,25 @@ export class BadRequestError extends AError {
 }
 
 export class UnauthorizedError extends AError {
-  constructor(message = "Action non authorisée") {
+  constructor(message = "Action non autorisée") {
     super(message, 401);
   }
 }
 
-export class InternalServerError extends AError {
-  constructor(message = "Une erreur inatendue est survenue") {
-    super(message, 500);
+export class ConflictError extends AError {
+  constructor(message = "La ressource existe déjà") {
+    super(message, 409);
   }
 }
 
-export class ExpiredTokenError extends AError {
-  constructor() {
-    super("Token expiré", 498);
+export class TooManyRequestsError extends AError {
+  constructor(message = "Trop de tentatives, réessayez plus tard") {
+    super(message, 429);
+  }
+}
+
+export class InternalServerError extends AError {
+  constructor(message = "Une erreur inattendue est survenue") {
+    super(message, 500);
   }
 }

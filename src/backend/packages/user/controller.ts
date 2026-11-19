@@ -1,23 +1,39 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { AController } from "../../core/base/Controller.js";
+import { AuthenticatedRequest } from "../../core/base/AuthenticatedRequest.js";
 import { getResponse } from "../../core/base/Response.js";
+import { getAuthUserId } from "../../core/middleware/auth.js";
+import { assertUuid } from "../../core/utils/validation.js";
 import { UsersService } from "./service.js";
 
 export class UserController extends AController {
-  service = new UsersService();
-  public getById = async (req: Request, res: Response, next: NextFunction) => {
+  protected readonly service = new UsersService();
+
+  public getMe = async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction,
+  ) => {
     try {
-      let userId: string;
+      const requesterId = getAuthUserId(req);
+      const profile = await this.service.getProfile(requesterId, requesterId);
 
-      if (!req.params.id) {
-        throw new Error("User id requis");
-      } else {
-        userId = String(req.params.id);
-      }
+      res.json(getResponse(profile));
+    } catch (err) {
+      next(err);
+    }
+  };
 
-      const response = await this.service.getUserDetails(userId);
+  public getById = async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const userId = assertUuid(req.params.id);
+      const profile = await this.service.getProfile(userId, getAuthUserId(req));
 
-      res.status(200).json(getResponse(response));
+      res.json(getResponse(profile));
     } catch (err) {
       next(err);
     }

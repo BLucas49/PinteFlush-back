@@ -1,7 +1,5 @@
 import { defineServer, /*defineRoom,*/ createRouter } from "colyseus";
 import { playground } from "@colyseus/playground";
-import express from "express";
-import cookieParser from "cookie-parser";
 /**
  * Import your Room files
  */
@@ -35,8 +33,7 @@ const server = defineServer({
   express: (app) => {
     InitApi();
 
-    app.use(express.json());
-    app.use(cookieParser());
+    app.disable("x-powered-by");
     app.use("/api", createAppRoutes());
   },
 });
